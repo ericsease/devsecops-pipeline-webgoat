@@ -1,0 +1,28 @@
+name: Scan for Secrets
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  scan:
+    container:
+      image: codnam007/whispers
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        name: Check out code
+
+      - name: Scan Code with Whispers
+        id: scan
+        run: echo "::set-output name=whispers-scan::$(whispers -c whispers.yaml .)\n"
+      
+      - name: Notify Slack
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_ICON_EMOJI: ':male-detective:'
+          SLACK_MESSAGE: ${{ steps.scan.outputs.whispers-scan }}
+          SLACK_TITLE: Whispers Scan Report
+          SLACK_FOOTER: Whispers
+          SLACK_WEBHOOK: ${{ secrets.WHISPERS_SLACK_WEBHOOK }}
+          MSG_MINIMAL: commit
