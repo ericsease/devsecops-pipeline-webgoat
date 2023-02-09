@@ -4,7 +4,7 @@ repos:
         # You are encouraged to use static refs such as tags, instead of branch name
         #
         # Running "pre-commit autoupdate" would automatically updates rev to latest tag
-        rev: master
+        rev: 0.13.1+ibm.56.dss
         hooks:
             -   id: detect-secrets # pragma: whitelist secret
                 # Add options for detect-secrets-hook binary. You can run `detect-secrets-hook --help` to list out all possible options.
@@ -14,16 +14,12 @@ repos:
                 # add "--fail-on-unaudited" to fail pre-commit for unaudited potential secrets
                 args: [ --baseline, .secrets.baseline, --use-all-plugins ]
 
-    -   repo: https://github.com/zricethezav/gitleaks
-        rev: v8.12.0
-        hooks:
-            -   id: gitleaks
+#    -   repo: https://github.com/zricethezav/gitleaks
+#        rev: v8.15.3
+#        hooks:
+#            -   id: gitleaks
 
-    -   repo: local
-        hooks:
-            -   id: trufflehog
-                name: TruffleHog
-                description: Detect secrets in your data.
-                entry: bash -c 'trufflehog-launcher git main HEAD'
-                language: system
-                stages: [ "commit", "push" ]
+##    -   repo: https://github.com/aquasecurity/trivy.git
+##        rev: v0.30.0
+##        hooks:
+##            -   id: trivyfs
